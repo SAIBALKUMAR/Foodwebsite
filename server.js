@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000
 app.get('/', function(req,res){
     res.render('home')
 })
-
+app.use(express.static('public'))
 app.use(expressLayout)
 app.set('views', path.join(__dirname,'/resources/views'))
 app.set('view engine','ejs')
