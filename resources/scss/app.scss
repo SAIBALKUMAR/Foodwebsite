@@ -1,5 +1,6 @@
 @import './variable';
-
+@import '~noty/src/noty.scss';
+@import '~noty/src/themes/mint.scss';
 body{
     font-family: 'Lato', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -21,7 +22,7 @@ nav li a {
 }
 
 section.hero {
-    background: gray;
+    background: rgb(119, 96, 96);
 }
 .size {
   background: $secondary;
@@ -36,5 +37,50 @@ section.hero {
         color: $pure;
 
     }
+   
+
     
+}
+
+.btn-primary {
+    background: $primary;
+    &:hover {
+        background: $primary-hover;
+    }
+}
+
+section.cart{
+    background: $secondary;
+    .amount{
+        color: $primary;
+
+    }
+}
+
+section.login {
+    background: $secondary;
+    min-height: calc(100vh-86px);
+    a {
+        color: $primary;
+        &:hover {
+            color: $primary-hover;
+        }
+    }
+
+}
+section.register {
+    background: $secondary;
+    min-height: calc(100vh-86px);
+    a {
+        color: $primary;
+        &:hover {
+            color: $primary-hover;
+        }
+    }
+
+}
+
+.noty_theme__mint{
+    border-radius:50px!important;
+    padding-left: 8px!important;
 }
