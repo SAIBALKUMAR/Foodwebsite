@@ -8,18 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,700;1,300;1,400&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/app.css">
-
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
 </head>
 <body>
     <nav class="container mx-auto flex align items-center justify-between py-2 ">
         <div>
-            <img src="/img/logo.jpg" alt="logo">
+            <img href="/" src="/img/logo.jpg" alt="logo">
             <h1 font-color="#438972" size=10 >Pizza</h1>
 
         </div>
         <div>
             <ul class="flex items-center">
-                 <li class="ml-6"><a href="#">Menu</a></li>
+                 <li class="ml-6"><a href="/">Menu</a></li>
                  <li class="ml-6"><a href="#">Offers</a></li>
                  <% if(user) { %>
                     <li class="ml-6">
@@ -37,6 +37,9 @@
     </nav>
     <%- body %>
     <footer></footer>
+    <script src="/socket.io/socket.io.js">
+    
+    </script>
     <script src="/js/app.js"></script>
 </body>
 </html>
