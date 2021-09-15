@@ -62,7 +62,8 @@ function initAdmin() {
                  ` 
             }).join('')
     }
-
+    
+    
 
     function generateMarkup(orders) {
         return orders.map( order => {
@@ -111,8 +112,20 @@ function initAdmin() {
         `
         }).join('')
     }
+    
+    socket.on('orderPlaced', (order) =>{
+        new Noty({
+            type: 'success',
+            timeout: 1000,
+            text:'New Order',
+            progressBar:false,
+        }).show();
+        orders.unshift(order)
+        orderTableBody.innerHTML =''
+        orderTableBody.innerHTML = generateMarkup(orders)    
+    })
 }
-initAdmin()
+
 
 let statuses = document.querySelectorAll('.status_line')
 let hiddenInput = document.querySelector('#hiddenInput')
@@ -146,12 +159,16 @@ function updateStatus(order) {
 }
 updateStatus(order);
 let socket = io()
+initAdmin(socket)
 if (order) {
     socket.emit('join', `order_${order._id}`)
 }
+let adminAreaPath = window.location.pathname
+    if(adminAreaPath.includes('admin')) {
+    socket.emit('join','adminRoom')
+    }
 
 socket.on('orderUpdated', (data) =>{
-    console.log('op')
     const updatedOrder = { ...order }
     updatedOrder.updatedAt = moment().format()
     updatedOrder.status = data.status
@@ -162,6 +179,6 @@ socket.on('orderUpdated', (data) =>{
         text: 'Order Updated',
         progressBar: false,
     }).show();
-    console.log('ert')
+    
     
 })

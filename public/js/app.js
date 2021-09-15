@@ -2136,11 +2136,31 @@ function initAdmin() {
     }).join('');
   }
 
+  var socket = io();
+  var adminAreaPath = window.location.pathname;
+  console.log(adminAreaPath);
+
+  if (adminAreaPath.includes('admin')) {
+    socket.emit('join', 'adminRoom');
+  }
+
   function generateMarkup(orders) {
     return orders.map(function (order) {
       return "\n            <tr>\n               <td class=\"border px-4 py-2 text-green-900\">\n                <p>".concat(order._id, "</p>\n                <div>").concat(renderItems(order.items), "</div>\n               </td>\n               <td class=\"border px-4 py-2\">").concat(order.customerId.name, "</td>\n               <td class=\"border px-4 py-2\">").concat(order.address, "</td>\n               <td class=\"border px-4 py-2\">").concat(order.phone, "</td>\n               <td class=\"border px-4 py-2\">\n                    <div class=\"inline-block relative w-64\">\n                        <form action=\"/admin/order/status\" method=\"POST\">\n                            <input type=\"hidden\" name=\"orderId\" value=\"").concat(order._id, "\">\n                            <select name=\"status\" onchange=\"this.form.submit()\"\n                                class=\"block appearance-none w-full bg-white border\n                                border-gray-400 hover: border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus: oultline-none focus: shadow-outline\">\n                                <option value=\"order_placed\"\n                                    ").concat(order.status === 'order_placed' ? 'selected' : '', ">\n                                    Placed</option>\n                                <option value=\"confirmed\" ").concat(order.status === 'confirmed' ? 'selected' : '', ">\n                                    Confirmed</option>\n                                <option value=\"prepared\" ").concat(order.status === 'prepared' ? 'selected' : '', ">\n                                    Prepared</option>\n                                <option value=\"delivered\" ").concat(order.status === 'delivered' ? 'selected' : '', ">\n                                    Delivered</option>\n                                <option value=\"completed\" ").concat(order.status === 'completed' ? 'selected' : '', ">\n                                    Completed</option>\n                            </select>\n                        </form>\n                    </div>\n                    <div class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n                        <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\"\n                            viewBox=\"0 0 20 20\">\n                            <path \n                              d=\"M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z\" />\n                        </svg>\n                    </div>\n                </td>\n                <td class=\"border px-4 py-2\">\n                     ").concat(moment__WEBPACK_IMPORTED_MODULE_2___default()(order.createdAt).format('MMMM Do YYYY, h:mm:ss a'), "\n                </td>\n            </tr>\n        ");
     }).join('');
   }
+
+  socket.on('orderPlaced', function (order) {
+    new (noty__WEBPACK_IMPORTED_MODULE_1___default())({
+      type: 'success',
+      timeout: 1000,
+      text: 'New Order',
+      progressBar: false
+    }).show();
+    orders.unshift(order);
+    orderTableBody.innerHTML = '';
+    orderTableBody.innerHTML = generateMarkup(orders);
+  });
 }
 
 initAdmin();
@@ -2184,8 +2204,6 @@ if (order) {
 }
 
 socket.on('orderUpdated', function (data) {
-  console.log('op');
-
   var updatedOrder = _objectSpread({}, order);
 
   updatedOrder.updatedAt = moment__WEBPACK_IMPORTED_MODULE_2___default()().format();
