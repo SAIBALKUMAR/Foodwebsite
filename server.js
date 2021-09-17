@@ -13,8 +13,8 @@ const Emitter = require('events')
 
 var mongoose = require('mongoose');
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/pizza';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+
+mongoose.connect(process.env.MONGO_CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 //Get the default connection
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -23,7 +23,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 //session configuration
 const mongoStore = MongoDbStore.create({
-  mongoUrl: mongoDB,
+  mongoUrl: process.env.MONGO_CONNECTION_URL,
   collectionName: "sessions",
 });
 
@@ -65,6 +65,9 @@ app.set('view engine','ejs')
 
 
 require('./routes/web')(app)
+app.use((req,res) =>{
+  res.status(404).render('errors')
+})
 
 const server = app.listen(PORT ,() => {
     console.log('Listening on port 3000')
