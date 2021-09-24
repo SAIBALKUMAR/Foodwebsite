@@ -4,7 +4,7 @@ const User = require('../../models/user')
 function authController() {
     return {
         login(req,res) {
-            res.render("auth/login");
+            res.render('auth/login');
         },
         postLogin(req, res, next) {
             passport.authenticate('local', (err, user, info) => {
@@ -28,7 +28,7 @@ function authController() {
             })(req,res,next)
         },
         register(req,res) {
-            res.render("auth/register")
+            res.render('auth/register')
         },
         async postregister(req,res) {
             const {name, email, password} = req.body

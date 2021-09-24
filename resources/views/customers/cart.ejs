@@ -1,53 +1,61 @@
-<section class="cart">
+<section class='cart'>
     <% if (!session.cart) {%>
-    <div class="emptycart py-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-3xl font-bold mb-2">Cart Empty</h1>
-            <p class="text-gray-500 text-lg mb-6">
+    <div class='emptycart py-4'>
+        <div class='container mx-auto text-center'>
+            <h1 class='text-3xl font-bold mb-2'>Cart Empty</h1>
+            <p class='text-gray-500 text-lg mb-6'>
                 You haven't ordered a pizza yet.<br>
                 To order a pizza, go to the main page.
             </p>
-            <img class="mx-auto" src="/img/emptycart.png" alt="empty-cart">
-            <a href="/" class="inline-block px-6 py-2 rounded-full btn-primary text-white font-bold mt-6">Go back</a>
+            <img class='mx-auto' src='/img/emptycart.png' alt='empty-cart'>
+            <a href='/' class='inline-block px-6 py-2 rounded-full btn-primary text-white font-bold mt-6'>Go back</a>
         </div>
     </div>
     <% } else { %>
-    <div class="order container mx-auto xl:w-1/2 sm:w-7/8 md:w-3/4 lg:w-1/2">
-        <div class="flex items-center border-b border-gray 300 pb-2">
-            <img src="/img/cartfill.jpg">
-            <h1 class="font-bold ml-4 text-2xl">Order Summary</h1>
+    <div class='order container mx-auto xl:w-1/2 sm:w-7/8 md:w-3/4 lg:w-1/2'>
+        <div class='flex items-center border-b border-gray 300 pb-2'>
+            <img src='/img/cartfill.jpg'>
+            <h1 class='font-bold ml-4 text-2xl'>Order Summary</h1>
         </div>
-        <div class="pizza-list">
+        <div class='pizza-list'>
             <hr>
             <% for(let pizza of Object.values(session.cart.items)) { %>
-            <div class="flex items-center mb-4">
-                <img class="w-24" src="/img/<%= pizza.item.image %>">
-                <div class="flex-1 ml-4">
+            <div class='flex items-center mb-4'>
+                <img class='w-24' src='/img/<%= pizza.item.image %>'>
+                <div class='flex-1 ml-4'>
                     <h1 ><%= pizza.item.name %></h1>
                     <span><%= pizza.item.size %></span>
                 </div>
-                <span class="flex-1"><%= pizza.qty %>Pcs</span>
-                <span class="font-bold text-lg">$<%= pizza.item.price * pizza.qty  %></span>
+                <span class='flex-1'><%= pizza.qty %>Pcs</span>
+                <span class='font-bold text-lg'>Rs.<%= pizza.item.price * pizza.qty  %></span>
             </div>
             <% }%>
             </div>
             <hr>
-            <div class="text-right py-4">
-                <span class="text-lg font-bold">Total Amount:</span>
-                <span class="amount text-2xl font-bold ml-2">$<%= session.cart.totalPrice%></span>
+            <div class='text-right py-4'>
+                <span class='text-lg font-bold'>Total Amount:</span>
+                <span class='amount text-2xl font-bold ml-2'>Rs.<%= session.cart.totalPrice%></span>
             </div>
             <% if(user) { %>
             <div>
-                <form action="/orders" method= "POST" class="mt-6 text-right">
-                    <input name="phone" class="border border-gray-400 p-2 w-1/2 mb-2" type="text" placeholder="phone number">
-                    <input name="address" class="border border-gray-400 p-2 w-1/2 mb-2" type="text" placeholder="address">
+                <form action='/orders' method= 'POST' class='mt-6 text-right' id='payment-form'>
+                    <div class='relative w-1/2 ml-auto mb-4'>
+                        <select id='paymentType' name='paymentType' class='block appearance-none w-full bg-white border borfer-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline'>
+                            <option value='cod'>Cash on delivery</option>
+                            <option value='card'>Card payment</option>
+                           
+                        </select>
+                    </div>
+                    <input name='phone' class='border border-gray-400 p-2 w-1/2 mb-2' type='number' placeholder='phone number'>
+                    <input name='address' class='border border-gray-400 p-2 w-1/2 mb-2' type='text' placeholder='address'>
                     
-                    <div>
-                        <button type="submit" class="btn-primary px-6 py-2 rounded-full text-white font-bold mt-2"> Order Now</button>
+                    <div class='mt-4 mb-4'>
+                        <div id='card-element'></div>
+                        <button type='submit' class='btn-primary px-6 py-2 rounded-full text-white font-bold mt-2'> Order Now</button>
                     </div>
             <% } else { %>
                     <div>
-                    <a href="/login" class=" text-right btn-primary px-6 py-2 rounded-full text-white font-bold mt-2"> Login to Continue</a> 
+                    <a href='/login' class=' text-right btn-primary px-6 py-2 rounded-full text-white font-bold mt-2'> Login to Continue</a> 
                      </div>
                      <% } %>
                 </form>
